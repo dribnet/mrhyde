@@ -52,12 +52,17 @@
   [suitename test-results]
   (if-let [script-node (-> d3 (.select "#hook-of-destruction") .node)]
     (if-let [selected-parent (-> d3 (.select (-> script-node .-parentNode)))]
-      (let [failure-count (count (filter (complement nil?) (map second test-results)))]
+      (let [failure-count (count (filter (complement nil?) (map second test-results)))
+            pass-fail-class (if (zero? failure-count) "passed" "failed")]
         (-> selected-parent (.selectAll "*") .remove)
         (-> selected-parent (.append "div")
-          (.text (str suitename " ran " (count test-results) " tests with " failure-count " failures"))
+          (.text (str suitename))
+          (.attr "id" "test-name")
+          (.classed pass-fail-class true))
+        (-> selected-parent (.append "div")
+          (.text (str "ran " (count test-results) " tests with " failure-count " failures"))
           (.attr "id" "test-summary")
-          (.classed (if (zero? failure-count) "passed" "failed") true))
+          (.classed pass-fail-class true))
         (-> selected-parent (.selectAll "div.test-resuls")
             (.data (clj->js test-results))
           (.enter) (.append "div")

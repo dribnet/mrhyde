@@ -1,18 +1,14 @@
-#test-summary {
+#test-name,#test-summary {
     font-size: 1.5em;
     font-weight: bold;
     text-align: center;
 }
 
-#test-summary.failed {
+.failed {
     color: darkred;
 }
 
-#test-summary.passed {
-    color: darkgreen;
-}
-
-#test-summary.passed {
+.passed {
     color: darkgreen;
 }
 
