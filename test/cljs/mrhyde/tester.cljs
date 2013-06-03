@@ -28,7 +28,7 @@
 
 (def tests (atom []))
 
-(defn add-test [name testfn]
+(defn ^:export add-test [name testfn]
   (swap! tests conj [name testfn]))
 
 (defn run-test [testfn]
@@ -71,7 +71,7 @@
 
 (def test-results (doall (run-tests)))
 
-(defn run-all-tests [suitename]
+(defn ^:export run-all-tests [suitename]
   (report suitename (doall (run-tests)))
   (reset-tests))
 

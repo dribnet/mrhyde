@@ -18,12 +18,12 @@
                                     :pretty-print true
                                     :print-input-delimiter true
                                     :output-to "public/out/mrhyde_test_whitespace.js"}}
-                       {:source-paths ["src/cljs" "test/cljs"]
+                       {:source-paths ["src/cljs" "src/clj" "test/cljs"]
                         :compiler  {:optimizations :simple
                                     :pretty-print true
                                     :print-input-delimiter true
                                     :output-to "public/out/mrhyde_test_simple.js"}}
-                       {:source-paths ["src/cljs" "test/cljs"]
+                       {:source-paths ["src/cljs" "src/clj" "test/cljs"]
                         :compiler  {:optimizations :advanced
                                     :externs [
                                       "public/d3/d3-externs.js"
