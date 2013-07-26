@@ -16,7 +16,7 @@ the mrhyde library is useful for JavaScript interop.
 
 ## Getting Started 
 
-To use strokes from your ClojureScript project, 
+To use mrhyde from your ClojureScript project, 
 add this dependency to your `project.clj`:
 
     [net.drib/mrhyde "0.5.0"]
