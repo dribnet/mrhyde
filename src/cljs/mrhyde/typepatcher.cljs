@@ -162,8 +162,15 @@
 (defn hyde-array-some [& args]
   (.log js/console "WARNING: someone has called unsupported hyde-array method some"))
 
+; TODO: support call f this
 (defn hyde-array-filter [& args]
-  (.log js/console "WARNING: someone has called unsupported hyde-array method filter"))
+  (this-as ct
+    ; (.log js/console args)
+    (let [v (vec args)
+          f (get v 0 identity)
+          t (get v 1 js/undefined)]
+      ; (.log js/console (str "WARNING: filter with " f " and " t))
+      (vec (doall (filter #(.call f t % 0 ct) (seq ct)))))))
 
 (defn hyde-array-map [f]
   (this-as ct
