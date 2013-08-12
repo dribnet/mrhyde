@@ -49,3 +49,10 @@ var p = {
   ]
 };
 p.children[0].parent = p;
+
+function isBiggerThanNine(element, index, array) {
+  return (element > 9);
+}
+function testFilterBiggerNine(array) {
+  return array.filter(isBiggerThanNine);
+}

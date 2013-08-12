@@ -169,8 +169,9 @@
     (let [v (vec args)
           f (get v 0 identity)
           t (get v 1 js/undefined)]
-      ; (.log js/console (str "WARNING: filter with " f " and " t))
-      (vec (doall (filter #(.call f t % 0 ct) (seq ct)))))))
+      ; (.log js/console (str "WARNING: filter with " f " and "))
+      ; (.log js/console t)
+      (vec (doall (filter #(.call f t %) (seq ct)))))))
 
 (defn hyde-array-map [f]
   (this-as ct

@@ -306,6 +306,20 @@
 
         ))))
 
+(defn jsArraysEqual [a1 a2]
+  (and (= (.-length a1) (.-length a2))
+          (every? identity (map = a1 a2))))
+
+(add-test "array functions"
+    (fn []
+      (let [v [3 6 9 12 15 18 21]
+            a (apply array v)]
+
+        (assert (jsArraysEqual (js/testFilterBiggerNine a) (array 12 15 18 21)))
+        (assert (jsArraysEqual (js/testFilterBiggerNine v) (array 12 15 18 21)))
+        )))
+
+
 ; (add-test "js->clj with cycle?"
 ;     (fn []
 ;         (let [a (js-obj) b (js-obj)] (set! (.-a b) a) (set! (.-b a) b) (js->clj a)) ; #cljs surprise of the day 
