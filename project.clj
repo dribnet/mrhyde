@@ -1,4 +1,4 @@
-(defproject net.drib/mrhyde "0.5.2-SNAPSHOT"
+(defproject net.drib/mrhyde "0.5.2"
   :description "mrhyde: cljs <-> js interop"
   :url "https://github.com/dribnet/mrhyde"
   :license {:name "Eclipse Public License"
