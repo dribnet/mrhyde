@@ -173,10 +173,15 @@
       ; (.log js/console t)
       (vec (doall (filter #(.call f t %) (seq ct)))))))
 
-(defn hyde-array-map [f]
+(defn hyde-array-map [& args]
   (this-as ct
-    (doall (map 
-      #(.call f js/undefined % %2 ct) (seq ct) (range)))))
+    (let [v (vec args)
+          f (get v 0 identity)
+          t (get v 1 js/undefined)]
+      ; (.log js/console (str "WARNING: map with " f " and "))
+      ; (.log js/console t)
+      (doall (map
+        #(.call f t % %2 ct) (seq ct) (range))))))
 
 ; forEach is a map that returns null
 (defn hyde-array-for-each [f]
