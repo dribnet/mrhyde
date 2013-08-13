@@ -82,7 +82,13 @@
   (.log js/console "WARNING: someone has called unsupported hyde-array method push"))
 
 (defn hyde-array-reverse [& args]
-  (.log js/console "WARNING: someone has called unsupported hyde-array method reverse"))
+  (this-as t
+    ; ensure cache (transient) exists
+    (hyde-array-ensure-cached t)
+    (let [c (aget t hyde-cache-key)]
+      (.reverse c)
+      ; return yourself
+      t)))
 
 (defn hyde-array-shift [& args]
   (this-as t
@@ -184,9 +190,8 @@
         #(.call f t % %2 ct) (seq ct) (range))))))
 
 ; forEach is a map that returns null
-(defn hyde-array-for-each [f]
-  ; call mapish with the same 'this'
-  (this-as ct (.call hyde-array-map ct f))
+(defn hyde-array-for-each [& args]
+  (this-as ct (.call hyde-array-map ct (first args) (second args)))
   nil)
 
 (defn hyde-array-reduce [& args]
