@@ -2,6 +2,7 @@
     (:require [mrhyde.tester :refer [add-test run-all-tests]]
               [mrhyde.mrhyde :refer [hyde? has-cache? from-cache]]
               [mrhyde.core :refer [bootstrap]]
+              [mrhyde.extend-js :refer [assoc-in! update-in!]]
               [mrhyde.typepatcher :refer [
                               recurse-from-hyde-cache
                               patch-known-sequential-types]]
@@ -319,6 +320,24 @@
         (assert (jsArraysEqual (js/testFilterBiggerNine v) (array 12 15 18 21)))
         )))
 
+(add-test "extend_js"
+    (fn []
+      (let [jso (clj->js {:a 1
+                          :b 2
+                          :c {:x 10}})
+            {:keys [a b]} jso]
+        (assert (= (:b jso) 2))
+        (assert (= (get-in jso [:c :x]) 10))
+        (assoc! jso :b 100)
+        (assert (= (:b jso) 100))
+        (assoc-in! jso [:c :y] 14)
+        (assert (= (get-in jso [:c :y]) 14))
+        (update-in! jso [:c :x] inc)
+        (assert (= (get-in jso [:c :x]) 11))
+        (.log js/console (.stringify js/JSON jso))
+      )
+    )
+)
 
 ; (add-test "js->clj with cycle?"
 ;     (fn []
