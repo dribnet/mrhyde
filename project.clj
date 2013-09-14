@@ -1,13 +1,14 @@
-(defproject net.drib/mrhyde "0.5.3-SNAPSHOT"
+(defproject net.drib/mrhyde "0.5.3"
   :description "mrhyde: cljs <-> js interop"
   :url "https://github.com/dribnet/mrhyde"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.5.1"]]
+  :dependencies [[org.clojure/clojure "1.5.1"]
+                 [org.clojure/clojurescript "0.0-1878"]]
   :min-lein-version "2.0.0"
   :source-paths ["src/clj" "src/cljs"]
 
-  :plugins [[lein-cljsbuild "0.3.2"]]
+  :plugins [[lein-cljsbuild "0.3.3"]]
 
   :cljsbuild {:builds [{:source-paths ["src/cljs" "src/clj"]
                         :jar true}
