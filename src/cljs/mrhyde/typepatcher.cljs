@@ -527,13 +527,13 @@
 
 (defn patch-known-mappish-types [] 
   (patch-sequential-type cljs.core.LazySeq) ; <-- TODO BUG - this should not be necessary!
-  (doseq [t [[cljs.core.ObjMap, "ObjMap"]
-             [cljs.core.PersistentHashMap, "PersistentHashMap"]
+  (doseq [t [[cljs.core.PersistentHashMap, "PersistentHashMap"]
              [cljs.core.PersistentArrayMap, "PersistentArrayMap"]]]
     (if (= (first t) (aget cljs.core (second t)))
       (patch-map-type t)))
   ; existant magic constant instances need to be patched in place...
-  (set! cljs.core.ObjMap/EMPTY (patch-map cljs.core.ObjMap/EMPTY)))
+  ;(set! cljs.core.ObjMap/EMPTY (patch-map cljs.core.ObjMap/EMPTY)) 
+  )
 
 ; on any object, someone somewhere is getting the parition key
 (defn get-partition-key []
