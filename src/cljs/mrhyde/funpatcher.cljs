@@ -1,5 +1,6 @@
 (ns mrhyde.funpatcher
-  (:require [mrhyde.mrhyde :refer [hyde-array? recurse-from-hyde-cache IHyde]]
+  (:require [mrhyde.mrhyde :refer [hyde-array? IHyde]]
+            [mrhyde.typepatcher :refer [recurse-from-hyde-cache]]
             [mrhyde.guts :refer [get-store-cur-js-fn restore-original-js-fn
                                  hyde-proto-array-marker hyde-proto-object-marker]]
             ))
