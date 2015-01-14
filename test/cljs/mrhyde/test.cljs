@@ -12,8 +12,7 @@
                               patch-args-clj-to-js]]
       ))
 
-;(def DummyLib (this-as ct (aget ct "DummyLib")))
-(def DummyLib (js-obj))
+(def DummyLib (this-as ct (aget ct "DummyLib")))
 
 (defn init []
   ; patch the dummy library
@@ -52,7 +51,7 @@
   (add-test "js access cljs vector as array"
     (fn []
       (let [v [1 2 3 4 5]]
-        (assert (= 5 (.-length v)))
+        (assert (= 5 v/length))
         (assert (= 1 (aget v 0)))
         (assert (= 3 (aget v "2")))
         (assert (= 5 (aget v 4)))
@@ -67,7 +66,7 @@
         (assert (= 1 (aget l 0)))
         (assert (= 21 (aget l 10)))
         (assert (= js/undefined (aget l 70)))
-        (assert (= 50 (.-length l)))
+        (assert (= 50 l/length))
         )))
 
   (add-test "js access lazy seq of vectors as array of arrays"
@@ -81,13 +80,13 @@
         ; (assert (js-arrays-equal (array 2 1) (aget l 5)))
         (assert (= js/undefined (aget l 7)))
         (assert (= js/undefined (aget (aget l 0) 3)))
-        (assert (= 6 (.-length l)))
+        (assert (= 6 l/length))
         )))
 
   (add-test "js access maps as object fields"
     (fn []
       (let [m {:one 1 :two 2 :three 3}]
-        (assert (= 1 (.-one m)))
+        (assert (= 1 m/one))
         (assert (= 2 (aget m "two")))
         (assert (= 3 (.-three m)))
         (assert (= js/undefined (.-four m)))
@@ -102,7 +101,7 @@
     (fn []
       (let [v [1,2]
             m {:one 1, :two 2}
-            [r0 r1 r2] (.wrapArgs0and2 js/DummyLib  v m m)]
+            [r0 r1 r2] (DummyLib/wrapArgs0and2 v m m)]
 
         ; (.log js/console r0)
         ; (.log js/console (array 1 2))
@@ -129,10 +128,10 @@
 
 (add-test "patch-return-value-to-clj"
     (fn []
-      (let [ra (.wrapReturnArgsIntoArray js/DummyLib 0 1 2)
-            rav (.wrapReturnArgsIntoArray js/DummyLib (array 0 1) (array 2 3) (array 4 5))
-            ro (.wrapReturnArgsIntoObjectjs/DummyLib 1 2 3)
-            rov (.wrapReturnArgsIntoObjectjs/DummyLib (array 0 1) (array 2 3) (array 4 5))]
+      (let [ra (DummyLib/wrapReturnArgsIntoArray 0 1 2)
+            rav (DummyLib/wrapReturnArgsIntoArray (array 0 1) (array 2 3) (array 4 5))
+            ro (DummyLib/wrapReturnArgsIntoObject 1 2 3)
+            rov (DummyLib/wrapReturnArgsIntoObject (array 0 1) (array 2 3) (array 4 5))]
 
         ; (.log js/console (str rov))
 
@@ -152,16 +151,16 @@
       (let [m {:one 1 :two 2 :three 3}]
 
         ; check equality where you can
-        (assert (= 1 (.wrapCall0on1 js/DummyLib :one m)))
-        (assert (= 3 (.wrapCall0on1 js/DummyLib :three m)))
-        (assert (= nil (.wrapCall0on1 js/DummyLib :four m)))
+        (assert (= 1 (DummyLib/wrapCall0on1 :one m)))
+        (assert (= 3 (DummyLib/wrapCall0on1 :three m)))
+        (assert (= nil (DummyLib/wrapCall0on1 :four m)))
         )))
 
 (add-test "patch everything in to-js and out to-clj"
     (fn []
-      (let [ra (.wrapArraysInAndOut js/DummyLib 1 2 3)
-            rav (.wrapArraysInAndOut js/DummyLib [0 1] [2 3] [4 5])
-            [r1 r2 r3] (.wrapArraysInAndOut js/DummyLib [:a :b :c] [#{:a, :b, :c}] ["a" "b" "c"])]
+      (let [ra (DummyLib/wrapArraysInAndOut 1 2 3)
+            rav (DummyLib/wrapArraysInAndOut [0 1] [2 3] [4 5])
+            [r1 r2 r3] (DummyLib/wrapArraysInAndOut [:a :b :c] [#{:a, :b, :c}] ["a" "b" "c"])]
 
         ; (.log js/console r2)
         ; (.log js/console (str (r2 0)))
@@ -184,7 +183,7 @@
         (assert (hyde? v))
         (assert (not (has-cache? v)))
         (assert (= (v (from-cache v))))
-        (let [[ra rv] (.zeroOutFirstArrayElement js/DummyLib v)]
+        (let [[ra rv] (DummyLib/zeroOutFirstArrayElement v)]
           ; the method thinks it changed the vector
           (assert (= rv 0))
           ; locally the vector remains unchanged
@@ -205,7 +204,7 @@
         (assert (hyde? m))
         (assert (not (has-cache? m)))
         (assert (= (m (from-cache m))))
-        (let [[rm rv] (.zeroOutMapKeyOne js/DummyLib m)]
+        (let [[rm rv] (DummyLib/zeroOutMapKeyOne m)]
           ; the method thinks it changed the map
           (assert (= rv 0))
           ; locally the vector remains unchanged
@@ -226,7 +225,7 @@
         (assert (hyde? m))
         (assert (not (has-cache? m)))
         (assert (= (m (from-cache m))))
-        (let [[rm rv] (.zeroOutMapKeyTen js/DummyLib m)]
+        (let [[rm rv] (DummyLib/zeroOutMapKeyTen m)]
           ; (-> js/fdebug (set! m))
           ; (-> js/gdebug (set! rm))
           ; (-> js/has (set! has-cache?))
@@ -250,8 +249,8 @@
         (assert (hyde? m))
         (assert (not (has-cache? m)))
         (assert (= (m (from-cache m))))
-        (let [[rm1 rv1] (.zeroOutMapKeyOne js/DummyLib m)
-              [rm2 rv2] (.zeroOutMapKeyTen js/DummyLib rm1)]
+        (let [[rm1 rv1] (DummyLib/zeroOutMapKeyOne m)
+              [rm2 rv2] (DummyLib/zeroOutMapKeyTen rm1)]
           ; remote additons to the maps
           (assert (= rv1 0))
           (assert (= rv2 0))
@@ -285,10 +284,10 @@
         (assert (not (has-cache? d)))
         (let [
               ;[rm1 rv1] (DummyLib/zeroOutFirstArrayElement d)
-              [rm2 rv2] (.zeroOutMapKeyOne js/DummyLib (nth d 2))
-              [rm3 rv3] (.zeroOutMapKeyTen js/DummyLib (nth d 2))
-              [rm4 rv4] (.zeroOutFirstArrayElement js/DummyLib (get-in d [2 :vec]))
-              [rm5 rv5] (.zeroOutFirstArrayElement js/DummyLib (get-in d [2 :vec 2]))]
+              [rm2 rv2] (DummyLib/zeroOutMapKeyOne (nth d 2))
+              [rm3 rv3] (DummyLib/zeroOutMapKeyTen (nth d 2))
+              [rm4 rv4] (DummyLib/zeroOutFirstArrayElement (get-in d [2 :vec]))
+              [rm5 rv5] (DummyLib/zeroOutFirstArrayElement (get-in d [2 :vec 2]))]
 
           ; cache information is only known locally
           (assert (not (has-cache? d)))
@@ -342,7 +341,7 @@
 
 ; (add-test "js->clj with cycle?"
 ;     (fn []
-;         (let [a (js-obj) b (js-obj)] (set! (.-a b) a) (set! (.-b a) b) (js->clj a)) ; #cljs surprise of the day
+;         (let [a (js-obj) b (js-obj)] (set! (.-a b) a) (set! (.-b a) b) (js->clj a)) ; #cljs surprise of the day 
 ;         (let [c (js->clj js/p)])))
 ;      ))
 
