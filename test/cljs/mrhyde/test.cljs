@@ -182,7 +182,7 @@
       (let [v [1 2 3]]
         (assert (hyde? v))
         (assert (not (has-cache? v)))
-        (assert (= (v (from-cache v))))
+        (assert (= v (from-cache v)))
         (let [[ra rv] (DummyLib/zeroOutFirstArrayElement v)]
           ; the method thinks it changed the vector
           (assert (= rv 0))
