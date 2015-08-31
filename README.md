@@ -19,4 +19,4 @@ the mrhyde library is useful for JavaScript interop.
 To use mrhyde from your ClojureScript project, 
 add this dependency to your `project.clj`:
 
-    [net.drib/mrhyde "0.5.4"]
+    [net.drib/mrhyde "0.5.4-SNAPSHOT"]
