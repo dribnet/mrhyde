@@ -120,18 +120,6 @@
 (defn hyde-array-join [& args]
   (.log js/console "WARNING: someone has called unsupported hyde-array method join"))
 
-(defn hyde-array-concat [& args]
-  (.log js/console "WARNING: someone has called unsupported hyde-array method concat"))
-
-(defn hyde-array-concat [& args]
-  (.log js/console "WARNING: someone has called unsupported hyde-array method concat"))
-
-(defn hyde-array-concat [& args]
-  (.log js/console "WARNING: someone has called unsupported hyde-array method concat"))
-
-(defn hyde-array-concat [& args]
-  (.log js/console "WARNING: someone has called unsupported hyde-array method concat"))
-
 ; currently only implemented for positive indices
 ; tries to honor laziness
 ; most likely has different edge cases if end > begin and whatnot
